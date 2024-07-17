@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "animate.css";
 import MyComponent from "../hook/useFetch";
 
 const Homepage = () => {
-  const [cardishovered, setCardIshover] = useState(false);
+  const [heroArr, serHeroArr] = useState([]);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  console.log(heroArr);
   const { data, isError, isLoading, moreHandle } = MyComponent();
-  if (data?.image) {
-    console.log(data);
-  }
+  useEffect(() => {
+    if (data?.image) {
+      serHeroArr((pre) => [...pre, data]);
+    }
+  }, [data]);
 
   return (
     <div className=" bg-background h-screen">
@@ -38,38 +42,37 @@ const Homepage = () => {
         </form>
         {data && (
           <>
-            {/* {data?.map((i) => {
-            })} */}
-              <div className="flex flex-wrap justify-start py-4">
+             <div className="flex flex-wrap justify-start py-4">
+            {heroArr?.map((item) => (
                 <div
-                  onMouseEnter={() => setCardIshover(!cardishovered)}
-                  onMouseLeave={() => setCardIshover(!cardishovered)}
-                  className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                    key={item.id}
+                    onMouseEnter={() => setHoveredItem(item.id)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
                 >
-                  {!cardishovered ? (
-                    <img
-                      className={`h-[200px] w-full object-cover rounded-lg shadow-lg animate__animated animate__flipInY `}
-                      src={data?.image.url}
-                      alt="Cityscape"
-                    />
-                  ) : (
-                    <div
-                      className={`relative animate__animated animate__flipOut ${
-                        cardishovered && "animate__animated animate__flipInY"
-                      }`}
-                    >
-                      <img
-                        className={`h-[200px] w-full object-cover rounded-lg`}
-                        src="img/235121.jpg"
-                        alt="Cityscape"
-                      />
-                      <div>
-                        <h1 className=" absolute top-3 left-3">Hello</h1>
-                      </div>
-                    </div>
-                  )}
+                    {hoveredItem === item.id ? (
+                        <div
+                            className={`relative animate__animated animate__flipInY`}
+                        >
+                            <img
+                                className="h-[200px] w-full object-cover rounded-lg"
+                                src="img/235121.jpg"
+                                alt="Cityscape"
+                            />
+                            <div>
+                                <h1 className="absolute top-3 left-3">Hello</h1>
+                            </div>
+                        </div>
+                    ) : (
+                        <img
+                            className="h-[200px] w-full object-cover rounded-lg shadow-lg animate__animated animate__flipInY"
+                            src={item?.image?.url}
+                            alt="Cityscape"
+                        />
+                    )}
                 </div>
-              </div>;
+            ))}
+        </div>
             <button
               onClick={moreHandle}
               className=" bg-gray-700 text-white px-2 py-1 rounded-md"
