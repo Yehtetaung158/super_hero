@@ -44,7 +44,6 @@ export const store = configureStore({
     getDefaultMiddleware().concat(heroApi.middleware),
 });
 
-// Save the favorites state to local storage whenever it changes
 store.subscribe(() => {
   saveFavoritesToLocalStorage(store.getState().favorites.favArr);
 });
