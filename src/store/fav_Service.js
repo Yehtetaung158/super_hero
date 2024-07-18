@@ -24,7 +24,7 @@ const favSlice = createSlice({
       }
     },
     removeFavorite: (state, action) => {
-      state.favArr = state.favArr.filter(fav => fav.id !== action.payload.id);
+      state.favArr = state.favArr.filter(fav => fav.id !== action.payload);
     }
   }
 });

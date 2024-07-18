@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import "animate.css";
 import MyComponent from "../hook/useFetch";
 import HeroCard from "../component/heroComponetnt/HeroCard";
+import FavList from "../component/heroComponetnt/FavList";
+import { useSelector } from "react-redux";
 
 const Homepage = () => {
+  const favArr = useSelector((state) => state.favorites.favArr);
   const [heroArr, serHeroArr] = useState([]);
+  const [favBtnHandle, setFavBtnHandle] = useState(false);
   const { data, isError, isLoading, moreHandle } = MyComponent();
   useEffect(() => {
     if (data && !heroArr.some((hero) => hero.id === data.id)) {
@@ -15,11 +19,12 @@ const Homepage = () => {
   return (
     <div className=" relative">
       <div className=" fixed top-0 left-0 right-0 bg-background h-screen -z-10"></div>
-        <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">
-          <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
-        </div>
-        <div className="  border-2 border-black border-t-0 max-full lg:w-2/3 md:w-3/4 mx-auto">
-          <form className="sticky top-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2">
+      <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">
+        <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
+      </div>
+      <div className=" relative border-2 border-black border-t-0 max-full lg:w-2/3 md:w-3/4 mx-auto">
+        <div className="sticky top-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2">
+          <form className="">
             <div className=" flex items-center justify-between px-2 py-1 rounded-md bg-white">
               <input
                 type="text"
@@ -36,108 +41,125 @@ const Homepage = () => {
                 </svg>
               </button>
             </div>
-            <button className=" bg-gray-700 text-white px-2 py-1 rounded-md">
-              Favourate
-            </button>
           </form>
-          {data && (
-            <>
-              <HeroCard heroArr={heroArr} moreHandle={moreHandle} />
-            </>
-          )}
+          <button
+            onClick={() => setFavBtnHandle(!favBtnHandle)}
+            className=" relative bg-gray-700 text-white px-2 py-1 rounded-md"
+          >
+           
+            {favBtnHandle ? <p>HOME</p> : <> <p className=" absolute bg-red-400 px-2 rounded-full -right-2 -top-2">{favArr.length}</p> <p>Favorite</p></>}
+          </button>
         </div>
+        {favBtnHandle ? (
+          <div className=" md:w-2/3 w-full  z-50 left-0 right-0 top-14 mx-auto">
+            <FavList/>
+          </div>
+        ) : (
+          <>
+            {data && (
+              <div
+                className={`${
+                  favBtnHandle && "opacity-15 pointer-events-none"
+                } `}
+              >
+                <HeroCard heroArr={heroArr} moreHandle={moreHandle} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
 
-        <nav aria-label="Page navigation example z-20">
-          <ul className="flex items-center -space-x-px h-10 text-base">
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      <nav aria-label="Page navigation example z-20">
+        <ul className="flex items-center -space-x-px h-10 text-base">
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <span className="sr-only">Previous</span>
+              <svg
+                className="w-3 h-3 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
               >
-                <span className="sr-only">Previous</span>
-                <svg
-                  className="w-3 h-3 rtl:rotate-180"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 1 1 5l4 4"
-                  />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 1 1 5l4 4"
+                />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              1
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              2
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              aria-current="page"
+              className="z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+            >
+              3
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              4
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              5
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <span className="sr-only">Next</span>
+              <svg
+                className="w-3 h-3 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
               >
-                1
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                2
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                aria-current="page"
-                className="z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              >
-                3
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                4
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                5
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                <span className="sr-only">Next</span>
-                <svg
-                  className="w-3 h-3 rtl:rotate-180"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m1 9 4-4-4-4"
-                  />
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </nav>
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

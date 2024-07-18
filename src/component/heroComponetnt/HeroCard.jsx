@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { addFavorite } from "../../store/fav_Service";
+import { addFavorite, removeFavorite } from "../../store/fav_Service";
 import { useDispatch, useSelector } from "react-redux";
 
 const HeroCard = ({ heroArr, moreHandle }) => {
   const dispatch = useDispatch();
   const favArr = useSelector((state) => state.favorites.favArr);
-  console.log(favArr);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [inFav, setInFav] = useState(null);
+  const [removeAnimate, setRemoveAnimate] = useState(null);
+
 
   const favBtnHandler = (id) => {
     const currentItem = heroArr.find((i) => i.id == id);
@@ -16,6 +17,14 @@ const HeroCard = ({ heroArr, moreHandle }) => {
       setInFav(id);
     }
   };
+
+  const removeBtnHandler = (id) => {
+    setRemoveAnimate(id);
+    setTimeout(() => {
+        dispatch(removeFavorite(id));
+    setRemoveAnimate(null);
+    }, 1000); // delay to allow animation to complete
+};
 
   return (
     <>
@@ -29,7 +38,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
           >
             {hoveredItem === item.id ? (
               <div
-                className={`relative animate__animated animate__flipInY bg-background h-full`}
+                className={`relative animate__animated ${removeAnimate === item.id ? '' : 'animate__flipInY'} bg-background h-full`}
               >
                 <img
                   className="h-[200px] w-full object-cover rounded-lg opacity-30"
@@ -56,10 +65,11 @@ const HeroCard = ({ heroArr, moreHandle }) => {
                       <div className="flex justify-between items-center w-full">
                         {favArr.find((i) => i.id === item.id) ? (
                           <button
+                            onClick={()=>{removeBtnHandler(item.id)}}
                             type="button"
                             className="text-yellow-400 bg-gray-600 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                           >
-                            Remove from FAV
+                            Remove
                           </button>
                         ) : (
                           <button
