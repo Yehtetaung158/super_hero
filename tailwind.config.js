@@ -13,7 +13,8 @@ export default {
       },
       backgroundImage: {
         'background': "url(./img/235121.jpg)",
-        'herobackground': "url(img/cityscape-3995532_1280.webp)"
+        'herobackground': "url(img/cityscape-3995532_1280.webp)",
+        'emptybackground': "url(img/picsvg_download.svg)"
       }
     },
   },
