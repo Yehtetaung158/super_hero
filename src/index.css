@@ -5,6 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.active{
+  color: #191818;
+  background-color: #efd552;
+  font-family: "Marvel", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
 .marvel-regular {
   font-family: "Marvel", sans-serif;
   font-weight: 400;

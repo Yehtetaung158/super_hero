@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addFavorite, removeFavorite } from "../../store/fav_Service";
 import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const HeroCard = ({ heroArr, moreHandle }) => {
   const dispatch = useDispatch();
@@ -8,6 +9,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [inFav, setInFav] = useState(null);
   const [removeAnimate, setRemoveAnimate] = useState(null);
+  const nav=useNavigate();
 
 
   const favBtnHandler = (id) => {
@@ -28,7 +30,11 @@ const HeroCard = ({ heroArr, moreHandle }) => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-start py-4">
+      <div className="relative h-full w-full">
+      <Outlet/>
+      </div>
+     <div className="opacity-20 pointer-events-none select-none overscroll-y-none		">
+     <div className="flex flex-wrap justify-start py-4 ">
         {heroArr?.map((item) => (
           <div
             key={item.id}
@@ -81,6 +87,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
                           </button>
                         )}
                         <button
+                          onClick={()=>nav(`/${item.id}`)}
                           type="button"
                           className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 flex gap-1 items-center"
                         >
@@ -123,6 +130,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
       >
         Favourate
       </button>
+     </div>
     </>
   );
 };
