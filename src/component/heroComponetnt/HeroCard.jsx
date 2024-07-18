@@ -10,6 +10,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
   const [inFav, setInFav] = useState(null);
   const [removeAnimate, setRemoveAnimate] = useState(null);
   const nav=useNavigate();
+  const [more,serMore]=useState(false);
 
 
   const favBtnHandler = (id) => {
@@ -25,7 +26,16 @@ const HeroCard = ({ heroArr, moreHandle }) => {
     setTimeout(() => {
         dispatch(removeFavorite(id));
     setRemoveAnimate(null);
-    }, 1000); // delay to allow animation to complete
+    }, 1000);
+  }
+
+  const moreHandel=()=>{
+    serMore(!more)
+  }
+
+  const moreBtnHandler=(id)=>{
+    moreHandel()
+    nav(`/${id}`,{state:{more}})
 };
 
   return (
@@ -33,7 +43,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
       <div className="relative h-full w-full">
       <Outlet/>
       </div>
-     <div className="opacity-20 pointer-events-none select-none overscroll-y-none		">
+     <div className={` ${more && 'opacity-20 pointer-events-none select-none overscroll-y-none'} `}>
      <div className="flex flex-wrap justify-start py-4 ">
         {heroArr?.map((item) => (
           <div
@@ -87,7 +97,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
                           </button>
                         )}
                         <button
-                          onClick={()=>nav(`/${item.id}`)}
+                          onClick={()=>moreBtnHandler(item.id)}
                           type="button"
                           className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 flex gap-1 items-center"
                         >
