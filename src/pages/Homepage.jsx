@@ -10,7 +10,7 @@ const Homepage = () => {
   const [heroArr, serHeroArr] = useState([]);
   const [favBtnHandle, setFavBtnHandle] = useState(false);
   const { data, isError, isLoading, moreHandle } = MyComponent();
-  const isProfileOpen=useSelector((state)=>state.profileOpen.isProfileOpen);
+  const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
   useEffect(() => {
     if (data && !heroArr.some((hero) => hero.id === data.id)) {
       serHeroArr((pre) => [...pre, data]);
@@ -18,7 +18,7 @@ const Homepage = () => {
   }, [data]);
 
   return (
-    <div className={`${isProfileOpen && 'fixed'} `}>
+    <div className={`${isProfileOpen && "fixed"} `}>
       <div className=" relative">
         <div className=" fixed top-0 left-0 right-0 bg-background h-screen -z-10"></div>
         <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">

@@ -7,17 +7,19 @@ import Powerstatspage from "./pages/profiledetailpage/Powerstatspage";
 import Appearancepage from "./pages/profiledetailpage/Appearancepage";
 import Workpage from "./pages/profiledetailpage/Workpage";
 import Connectionspage from "./pages/profiledetailpage/Connectionspage";
+import IndexProfile from "./pages/profiledetailpage/IndexProfile";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Homepage />}>
         <Route path="/:id" element={<HeroProfile />}>
-          <Route index path="powerstats" element={<Powerstatspage/>}/>
-          <Route path="biography" element={<Biographypage/>}/>
-          <Route path="appearance" element={<Appearancepage/>}/>
-          <Route path="work" element={<Workpage/>}/>
-          <Route path="connections" element={<Connectionspage/>}/>
+          <Route index element={<IndexProfile />} />
+          {/* <Route path="powerstats" element={<Powerstatspage />} /> */}
+          <Route path="biography" element={<Biographypage />} />
+          <Route path="appearance" element={<Appearancepage />} />
+          <Route path="work" element={<Workpage />} />
+          <Route path="connections" element={<Connectionspage />} />
         </Route>
       </Route>
     </Routes>

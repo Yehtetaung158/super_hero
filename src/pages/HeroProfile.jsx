@@ -1,23 +1,32 @@
 import React from "react";
-import { NavLink, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useHerosQuery } from "../store/service/endpoint/heroEnpint";
 import { useDispatch } from "react-redux";
 import { toggleSProfile } from "../store/profileOpen_service";
 
 const HeroProfile = () => {
   const { id } = useParams();
-  const dispatch=useDispatch();
-  const nav=useNavigate();
+  const dispatch = useDispatch();
+  const nav = useNavigate();
   const { data, isError, isLoading } = useHerosQuery(id);
 
-  const outBtnHandler=()=>{
-    dispatch(toggleSProfile())
-    nav("/")
-  }
+  const outBtnHandler = () => {
+    dispatch(toggleSProfile());
+    nav("/");
+  };
 
   return (
     <div className=" fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-light-blue-400 p-2 border-2 border-black  rounded-sm  z-50 w-5/6 h-3/4 min-h-72 bg-background">
-      <button onClick={outBtnHandler} className="absolute top-2 right-2 w-6 z-40">
+      <button
+        onClick={outBtnHandler}
+        className="absolute top-2 right-2 w-6 z-40"
+      >
         {/* <img src="img\x-40.svg" alt="" /> */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -58,24 +67,32 @@ const HeroProfile = () => {
                       />
                     </div>
                     <div>
-                      <ul className=" my-2 py-1 mx-2 px-2 bg-gray-400">
-                        {Object.keys(data).map(
-                          (key) =>
-                            key !== "id" &&
-                            key !== "name" &&
-                            key !== "response" &&
-                            key !== "image" && (
-                              <NavLink
-                                key={key}
-                                state={{ data, key }}
-                                className={`w-full flex `}
-                                to={`/${id}/${key}`}
-                              >
-                                {key}
-                              </NavLink>
-                            )
-                        )}
-                      </ul>
+                      {data && (
+                        <>
+                          <ul className=" my-2 py-1 mx-2 px-2 bg-gray-400">
+                            <NavLink state={{data}} to={`/${data.id}`} end>
+                              Powerstats
+                            </NavLink>
+                            {Object.keys(data).map(
+                              (key) =>
+                                key !== "id" &&
+                                key !== "name" &&
+                                key !== "response" &&
+                                key !== "image" &&
+                                key !== "powerstats" && (
+                                  <NavLink
+                                    key={key}
+                                    state={{ data, key }}
+                                    className={`w-full flex `}
+                                    to={`/${id}/${key}`}
+                                  >
+                                    {key}
+                                  </NavLink>
+                                )
+                            )}
+                          </ul>
+                        </>
+                      )}
                     </div>
                   </div>
                   <div>
