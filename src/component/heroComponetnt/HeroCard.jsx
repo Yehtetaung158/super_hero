@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { addFavorite, removeFavorite } from "../../store/fav_Service";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
+import { toggleSProfile } from "../../store/profileOpen_service";
 
 const HeroCard = ({ heroArr, moreHandle }) => {
   const dispatch = useDispatch();
@@ -10,7 +11,8 @@ const HeroCard = ({ heroArr, moreHandle }) => {
   const [inFav, setInFav] = useState(null);
   const [removeAnimate, setRemoveAnimate] = useState(null);
   const nav=useNavigate();
-  const [more,serMore]=useState(false);
+  const isProfileOpen=useSelector((state)=>state.profileOpen.isProfileOpen);
+
 
 
   const favBtnHandler = (id) => {
@@ -29,13 +31,9 @@ const HeroCard = ({ heroArr, moreHandle }) => {
     }, 1000);
   }
 
-  const moreHandel=()=>{
-    serMore(!more)
-  }
-
   const moreBtnHandler=(id)=>{
-    moreHandel()
-    nav(`/${id}`,{state:{more}})
+    dispatch(toggleSProfile())
+    nav(`/${id}`)
 };
 
   return (
@@ -43,7 +41,7 @@ const HeroCard = ({ heroArr, moreHandle }) => {
       <div className="relative h-full w-full">
       <Outlet/>
       </div>
-     <div className={` ${more && 'opacity-20 pointer-events-none select-none overscroll-y-none'} `}>
+     <div className={` ${isProfileOpen && 'opacity-20 pointer-events-none select-none overscroll-y-none'} `}>
      <div className="flex flex-wrap justify-start py-4 ">
         {heroArr?.map((item) => (
           <div

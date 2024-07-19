@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { heroApi } from "./hero_service";
 import favReducer from './fav_Service';
+import profileOpenReducer from './profileOpen_service';
 
 // Load the initial state for favArr from local storage
 const loadFavoritesFromLocalStorage = () => {
@@ -37,7 +38,8 @@ const preloadedState = {
 export const store = configureStore({
   reducer: {
     [heroApi.reducerPath]: heroApi.reducer,
-    favorites: favReducer
+    favorites: favReducer,
+    profileOpen:profileOpenReducer,
   },
   preloadedState, // Include preloaded state here
   middleware: (getDefaultMiddleware) =>
