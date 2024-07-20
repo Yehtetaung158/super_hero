@@ -9,15 +9,20 @@ import Search from "../component/heroComponetnt/Search";
 const Homepage = () => {
   const favArr = useSelector((state) => state.favorites.favArr);
   const [heroArr, serHeroArr] = useState([]);
-  const [favBtnHandle, setFavBtnHandle] = useState(false);
+  const [isfavBtn, setisFavBtn] = useState(false);
   const { data, isError, isLoading, moreHandle } = MyComponent();
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
-
+  // for search
   const [input, setInput] = useState("");
   const inputChangehandler = (e) => {
     setInput(e.target.value);
   };
   const [isSearch, setIsSearch] = useState(false);
+  const { searchData, searchError, isSearchLoading } = MyComponent(input);
+  // console.log("search data",searchData, searchError, isSearchLoading);
+  // const [removeAnimate, setRemoveAnimate] = useState(null);
+  // console.log("searchData",isSearchLoading,searchData,searchError)
+  console.log("data", data, isLoading);
 
   const heroSearchSubmithandler = async (e) => {
     e.preventDefault();
@@ -35,7 +40,7 @@ const Homepage = () => {
     <div className={`${isProfileOpen && "fixed"} `}>
       <div className=" relative">
         <div className=" fixed top-0 left-0 right-0 bg-background h-screen -z-10"></div>
-        {/* cober photo */}
+        {/* cover photo */}
         <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">
           <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
         </div>
@@ -99,12 +104,13 @@ const Homepage = () => {
             {/* fav btn  */}
             <button
               onClick={async () => {
-                setFavBtnHandle(!favBtnHandle);
+                setisFavBtn(!isfavBtn);
                 setIsSearch(false);
+                setInput("");
               }}
               className=" relative bg-gray-700 text-white px-2 py-1 rounded-md"
             >
-              {favBtnHandle ? (
+              {isfavBtn ? (
                 <p>HOME</p>
               ) : (
                 <>
@@ -118,20 +124,29 @@ const Homepage = () => {
             </button>
           </div>
 
-          {favBtnHandle ? (
+          {isfavBtn ? (
             <div className=" md:w-2/3 w-full  z-50 left-0 right-0 top-14 mx-auto">
               <FavList />
             </div>
           ) : (
             <>
-              {isSearch ? (
-                <>{<Search input={input} />}</>
+              {isSearch && searchData?.results ? (
+                // <><h1>searchData.response</h1></>
+                <>
+                  {
+                    <HeroCard
+                      searchData={searchData.results}
+                      searchError={searchError}
+                      isSearchLoading={isSearchLoading}
+                    />
+                  }
+                </>
               ) : (
                 <>
                   {data && (
                     <div
                       className={`${
-                        favBtnHandle && "opacity-15 pointer-events-none"
+                        isfavBtn && "opacity-15 pointer-events-none"
                       } `}
                     >
                       <HeroCard heroArr={heroArr} moreHandle={moreHandle} />
