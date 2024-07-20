@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "animate.css";
-import MyComponent from "../hook/useFetch";
 import HeroCard from "../component/heroComponetnt/HeroCard";
 import FavList from "../component/heroComponetnt/FavList";
 import { useSelector } from "react-redux";
-import Search from "../component/heroComponetnt/Search";
 
 const Homepage = () => {
   const favArr = useSelector((state) => state.favorites.favArr);
-  const [heroArr, serHeroArr] = useState([]);
   const [isfavBtn, setisFavBtn] = useState(false);
-  const { data, isError, isLoading, moreHandle } = MyComponent();
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
+
   // for search
   const [input, setInput] = useState("");
   const inputChangehandler = (e) => {
     setInput(e.target.value);
   };
   const [isSearch, setIsSearch] = useState(false);
-  const { searchData, searchError, isSearchLoading } = MyComponent(input);
-  // console.log("search data",searchData, searchError, isSearchLoading);
-  // const [removeAnimate, setRemoveAnimate] = useState(null);
-  // console.log("searchData",isSearchLoading,searchData,searchError)
-  console.log("data", data, isLoading);
 
   const heroSearchSubmithandler = async (e) => {
     e.preventDefault();
@@ -30,23 +22,19 @@ const Homepage = () => {
     setIsSearch(!isSearch);
   };
 
-  useEffect(() => {
-    if (data && !heroArr.some((hero) => hero.id === data.id)) {
-      serHeroArr((pre) => [...pre, data]);
-    }
-  }, [data]);
-
   return (
+    // to fit when hero profile is open
     <div className={`${isProfileOpen && "fixed"} `}>
       <div className=" relative">
+        {/* background */}
         <div className=" fixed top-0 left-0 right-0 bg-background h-screen -z-10"></div>
         {/* cover photo */}
         <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">
           <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
         </div>
-        {/* body  */}
+
         <div className=" relative border-2 border-black border-t-0 max-full lg:w-2/3 md:w-3/4 mx-auto">
-          {/* search bar */}
+          {/* search bar & fav btn */}
           <div className="sticky top-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2">
             {isSearch ? (
               <>
@@ -124,34 +112,24 @@ const Homepage = () => {
             </button>
           </div>
 
+          {/* body  */}
           {isfavBtn ? (
             <div className=" md:w-2/3 w-full  z-50 left-0 right-0 top-14 mx-auto">
-              <FavList />
+              <HeroCard isfavBtn={isfavBtn} />
             </div>
           ) : (
             <>
-              {isSearch && searchData?.results ? (
-                // <><h1>searchData.response</h1></>
-                <>
-                  {
-                    <HeroCard
-                      searchData={searchData.results}
-                      searchError={searchError}
-                      isSearchLoading={isSearchLoading}
-                    />
-                  }
-                </>
+              {isSearch ? (
+                <>{<HeroCard input={input} />}</>
               ) : (
                 <>
-                  {data && (
-                    <div
-                      className={`${
-                        isfavBtn && "opacity-15 pointer-events-none"
-                      } `}
-                    >
-                      <HeroCard heroArr={heroArr} moreHandle={moreHandle} />
-                    </div>
-                  )}
+                  <div
+                    className={`${
+                      isfavBtn && "opacity-15 pointer-events-none"
+                    } `}
+                  >
+                    <HeroCard />
+                  </div>
                 </>
               )}
             </>

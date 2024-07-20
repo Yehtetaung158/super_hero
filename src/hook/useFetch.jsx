@@ -4,17 +4,17 @@ import {
   useHerosQuery,
 } from "../store/service/endpoint/heroEnpint";
 
-const MyComponent = ( heroInput ) => {
+const MyComponent = (heroInput) => {
   const [heroId, setHeriId] = useState(1);
   const [moreHeroFetch, setmoreHeroFetch] = useState(10);
-  const [heroName, setHeroName] = useState("");
-  
+  const [heroName, setHeroName] = useState(null);
+
   const { data, isError, isLoading } = useHerosQuery(heroId);
   const {
     data: searchData,
     isError: searchError,
     isLoading: isSearchLoading,
-  } = useHeroSearchQuery(heroName,{skip:!heroName});
+  } = useHeroSearchQuery(heroName, { skip: !heroName });
 
   useEffect(() => {
     if (heroInput) {

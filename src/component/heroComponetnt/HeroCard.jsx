@@ -3,30 +3,24 @@ import { addFavorite, removeFavorite } from "../../store/fav_Service";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toggleSProfile } from "../../store/profileOpen_service";
+import MyComponent from "../../hook/useFetch";
 
-const HeroCard = ({
-  heroArr,
-  moreHandle,
-  searchData,
-  searchError,
-  isSearchLoading,
-}) => {
+const HeroCard = ({ input, isfavBtn }) => {
+  const nav = useNavigate();
   const dispatch = useDispatch();
-  const favArr = useSelector((state) => state.favorites.favArr);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [removeAnimate, setRemoveAnimate] = useState(null);
+  const [heroArr, serHeroArr] = useState([]);
   const [currentArr, setCurrentArr] = useState(heroArr);
-  const nav = useNavigate();
-  const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
 
-  useEffect(() => {
-    if (searchData) {
-      setCurrentArr(searchData);
-    }
-    if(heroArr){
-      setCurrentArr(heroArr)
-    }
-  }, [searchData,heroArr]);
+  const { data, isError, isLoading, moreHandle } = MyComponent();
+
+  const favArr = useSelector((state) => state.favorites.favArr);
+  console.log(favArr)
+  const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
+  const { searchData, searchError, isSearchLoading } = MyComponent(input, {
+    skip: !input,
+  });
 
   const favBtnHandler = (id) => {
     const currentItem = currentArr.find((i) => i.id == id);
@@ -35,12 +29,12 @@ const HeroCard = ({
     }
   };
 
-  const removeBtnHandler = (id) => {
+  const removeBtnHandler = async(id) => {
     setRemoveAnimate(id);
-    setTimeout(() => {
+    setTimeout(async() => {
       dispatch(removeFavorite(id));
       setRemoveAnimate(null);
-    }, 1000);
+    }, 500);
   };
 
   const moreBtnHandler = (id) => {
@@ -48,12 +42,37 @@ const HeroCard = ({
     nav(`/${id}`);
   };
 
-  if (isSearchLoading) {
-    return(
+  //for not to be same fav add
+  useEffect(() => {
+    if (data && !heroArr.some((hero) => hero.id === data.id)) {
+      serHeroArr((pre) => [...pre, data]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (searchData?.results) {
+      setCurrentArr(searchData.results);
+    } else if (isfavBtn && favArr) {
+      setCurrentArr(favArr);
+    } else if (heroArr) {
+      setCurrentArr(heroArr);
+    }
+  }, [searchData, heroArr, isfavBtn, favArr]);
+
+  if (isSearchLoading || isLoading) {
+    return (
       <div>
         <h1>Loading...</h1>
       </div>
-    )
+    );
+  }
+
+  if ((isError, searchError)) {
+    return (
+      <div>
+        <h1>Error!</h1>
+      </div>
+    );
   }
 
   return (
@@ -68,6 +87,16 @@ const HeroCard = ({
         } `}
       >
         <div className="flex flex-wrap justify-start py-4 ">
+          <div className="  items-center justify-center w-full h-scree last:flex hidden animate__animated animate__pulse">
+            <div className=" flex flex-col ">
+              <div className="relative">
+                <img src="img/picsvg_download.svg" alt="" />
+                <div className=" w-full flex justify-center absolute top-2/3 z-50 marvel-regular-italic">
+                  There is no FAV Hero
+                </div>
+              </div>
+            </div>
+          </div>
           {currentArr?.map((item) => (
             <div
               key={item.id}
@@ -78,7 +107,7 @@ const HeroCard = ({
               {hoveredItem === item.id ? (
                 <div
                   className={`relative animate__animated ${
-                    removeAnimate === item.id ? "" : "animate__flipInY"
+                    removeAnimate === item.id ? "animate__flipInY" : ""
                   } bg-background h-full`}
                 >
                   <img
@@ -108,6 +137,7 @@ const HeroCard = ({
                             <button
                               onClick={() => {
                                 removeBtnHandler(item.id);
+                                console.log(item.id)
                               }}
                               type="button"
                               className="text-yellow-400 bg-gray-600 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
@@ -161,14 +191,15 @@ const HeroCard = ({
             </div>
           ))}
         </div>
-        {moreHandle && (
-          <button
-            onClick={moreHandle}
-            className="bg-gray-700 text-white px-2 py-1 rounded-md"
-          >
-            More...
-          </button>
-        )}
+        {moreHandle ||
+          (!isfavBtn && (
+            <button
+              onClick={moreHandle}
+              className="bg-gray-700 text-white px-2 py-1 rounded-md"
+            >
+              More...
+            </button>
+          ))}
       </div>
     </>
   );
