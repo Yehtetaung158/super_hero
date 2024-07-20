@@ -7,7 +7,12 @@ const authHeroEndpoint = heroApi.injectEndpoints({
         url: `/${id}`,
       }),
     }),
+    heroSearch: builder.query({
+      query:(name)=>({
+        url:`/search/${name}`
+      })
+    })
   }),
 });
 
-export const { useHerosQuery } = authHeroEndpoint;
+export const { useHerosQuery,useHeroSearchQuery } = authHeroEndpoint;
