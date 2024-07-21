@@ -11,17 +11,16 @@ const HeroCard = ({ input, isfavBtn }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [removeAnimate, setRemoveAnimate] = useState(null);
   const [heroArr, serHeroArr] = useState([]);
-  const [currentArr, setCurrentArr] = useState(heroArr);
+  const [currentArr, setCurrentArr] = useState([]);
 
   const { data, isError, isLoading, moreHandle } = MyComponent();
 
   const favArr = useSelector((state) => state.favorites.favArr);
-  console.log(favArr)
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
   const { searchData, searchError, isSearchLoading } = MyComponent(input, {
     skip: !input,
   });
-
+  console.log(searchData)
   const favBtnHandler = (id) => {
     const currentItem = currentArr.find((i) => i.id == id);
     if (currentItem) {
@@ -69,12 +68,29 @@ const HeroCard = ({ input, isfavBtn }) => {
     );
   }
 
-  if ((isError, searchError)) {
+  if ((isError || searchError)) {
     return (
       <div>
         <h1>Error!</h1>
       </div>
     );
+  }
+
+  if( currentArr.length===0 ||searchData?.error==="character with given name not found" ){
+    return(<>
+    <div className="  items-center justify-center w-full h-scree last:flex hidden animate__animated animate__pulse">
+    <div className=" flex flex-col ">
+      <div className="relative">
+        <img src="img/picsvg_download.svg" alt="" />
+        <div className=" w-full flex justify-center absolute top-2/3 z-50 marvel-regular-italic">
+        {searchData?.error ? <>{searchData?.error}</> : <>
+        There is no FAV Hero
+        </>}
+        </div>
+      </div>
+    </div>
+  </div>
+    </>)
   }
 
   return (
@@ -89,16 +105,6 @@ const HeroCard = ({ input, isfavBtn }) => {
         } `}
       >
         <div className="flex flex-wrap justify-start py-4 ">
-          <div className="  items-center justify-center w-full h-scree last:flex hidden animate__animated animate__pulse">
-            <div className=" flex flex-col ">
-              <div className="relative">
-                <img src="img/picsvg_download.svg" alt="" />
-                <div className=" w-full flex justify-center absolute top-2/3 z-50 marvel-regular-italic">
-                  There is no FAV Hero
-                </div>
-              </div>
-            </div>
-          </div>
           {currentArr?.map((item) => (
             <div
               key={item.id}

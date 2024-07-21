@@ -29,7 +29,7 @@ const Homepage = () => {
         {/* background */}
         <div className=" fixed top-0 left-0 right-0 bg-yellow-500 h-screen -z-10"></div>
         {/* cover photo */}
-        <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/6 z-50 ">
+        <div className=" tracking-in-contract-bck flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/6 z-50 ">
           <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
         </div>
 
@@ -96,7 +96,7 @@ const Homepage = () => {
                 setIsSearch(false);
                 setInput("");
               }}
-              className=" cardbg hvr-grow hvr-grow:active relative bg-gray-700 text-white px-2 py-1 rounded-md"
+              className={` cardbg hvr-bounce-in relative bg-gray-700 text-white px-2 py-1 rounded-md`}
             >
               {isfavBtn ? (
                 <p>HOME</p>
@@ -111,9 +111,9 @@ const Homepage = () => {
               )}
             </button>
           </div>
-           <div className=" w-full z-30 bg-gray-300 ">
-             {/* body  */}
-             {isfavBtn ? (
+          <div className=" w-full z-30 bg-gray-300 ">
+            {/* body  */}
+            {isfavBtn ? (
               <>
                 <HeroCard isfavBtn={isfavBtn} />
               </>
@@ -134,8 +134,8 @@ const Homepage = () => {
                 )}
               </>
             )}
-           </div>
-           <div className="sticky bottom-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2 h-10"></div>
+          </div>
+          <div className="sticky bottom-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2 h-10"></div>
         </div>
 
         {/* <nav aria-label="Page navigation example z-20">
