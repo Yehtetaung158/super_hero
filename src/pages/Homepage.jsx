@@ -3,14 +3,22 @@ import "animate.css";
 import HeroCard from "../component/heroComponetnt/HeroCard";
 import FavList from "../component/heroComponetnt/FavList";
 import { useSelector } from "react-redux";
+import MyComponent from "../hook/useFetch";
 
 const Homepage = () => {
   const favArr = useSelector((state) => state.favorites.favArr);
   const [isfavBtn, setisFavBtn] = useState(false);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
+  const [input, setInput] = useState("");
+  const { searchData} = MyComponent(input, {
+    skip: !input,
+  });
 
   // for search
-  const [input, setInput] = useState("");
+  const resultsCount = searchData?.results?.length || 0;
+  const message = `Result for (${
+    resultsCount > 0 ? resultsCount : ""
+  }) : ${input} `;
   const inputChangehandler = (e) => {
     setInput(e.target.value);
   };
@@ -18,7 +26,6 @@ const Homepage = () => {
 
   const heroSearchSubmithandler = async (e) => {
     e.preventDefault();
-    console.log(input);
     setIsSearch(!isSearch);
   };
 
@@ -39,7 +46,7 @@ const Homepage = () => {
             {isSearch ? (
               <>
                 <div className=" flex items-center justify-between px-2 py-1 rounded-md bg-white">
-                  <input readOnly value={`Result for : ${input}`} type="text" />
+                  <input readOnly value={message} type="text" />
                   <button
                     onClick={() => {
                       setIsSearch(false);
