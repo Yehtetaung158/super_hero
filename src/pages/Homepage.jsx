@@ -25,15 +25,15 @@ const Homepage = () => {
   return (
     // to fit when hero profile is open
     <div className={`${isProfileOpen && "fixed"} `}>
-      <div className=" relative">
+      <div className=" relative w-full ">
         {/* background */}
-        <div className=" fixed top-0 left-0 right-0 bg-background h-screen -z-10"></div>
+        <div className=" fixed top-0 left-0 right-0 bg-yellow-500 h-screen -z-10"></div>
         {/* cover photo */}
-        <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/5 z-50 ">
+        <div className="  flex border-y-2 border-black justify-center items-center bg-herobackground bg-center h-1/6 z-50 ">
           <h1 className=" honk text-4xl">SAVE THE WORLD</h1>
         </div>
 
-        <div className=" relative border-2 border-black border-t-0 max-full lg:w-2/3 md:w-3/4 mx-auto">
+        <div className="  max-full lg:w-2/3 md:w-3/4 mx-auto h-full z-20">
           {/* search bar & fav btn */}
           <div className="sticky top-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2">
             {isSearch ? (
@@ -96,7 +96,7 @@ const Homepage = () => {
                 setIsSearch(false);
                 setInput("");
               }}
-              className=" relative bg-gray-700 text-white px-2 py-1 rounded-md"
+              className=" cardbg hvr-grow hvr-grow:active relative bg-gray-700 text-white px-2 py-1 rounded-md"
             >
               {isfavBtn ? (
                 <p>HOME</p>
@@ -111,32 +111,34 @@ const Homepage = () => {
               )}
             </button>
           </div>
-
-          {/* body  */}
-          {isfavBtn ? (
-            <div className=" md:w-2/3 w-full  z-50 left-0 right-0 top-14 mx-auto">
-              <HeroCard isfavBtn={isfavBtn} />
-            </div>
-          ) : (
-            <>
-              {isSearch ? (
-                <>{<HeroCard input={input} />}</>
-              ) : (
-                <>
-                  <div
-                    className={`${
-                      isfavBtn && "opacity-15 pointer-events-none"
-                    } `}
-                  >
-                    <HeroCard />
-                  </div>
-                </>
-              )}
-            </>
-          )}
+           <div className=" w-full z-30 bg-gray-300 ">
+             {/* body  */}
+             {isfavBtn ? (
+              <>
+                <HeroCard isfavBtn={isfavBtn} />
+              </>
+            ) : (
+              <>
+                {isSearch ? (
+                  <>{<HeroCard input={input} />}</>
+                ) : (
+                  <>
+                    <div
+                      className={`${
+                        isfavBtn && "opacity-15 pointer-events-none"
+                      } `}
+                    >
+                      <HeroCard />
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+           </div>
+           <div className="sticky bottom-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2 h-10"></div>
         </div>
 
-        <nav aria-label="Page navigation example z-20">
+        {/* <nav aria-label="Page navigation example z-20">
           <ul className="flex items-center -space-x-px h-10 text-base">
             <li>
               <a
@@ -226,7 +228,7 @@ const Homepage = () => {
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> */}
       </div>
     </div>
   );

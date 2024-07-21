@@ -59,11 +59,13 @@ const HeroCard = ({ input, isfavBtn }) => {
     }
   }, [searchData, heroArr, isfavBtn, favArr]);
 
-  if (isSearchLoading || isLoading) {
+  // isSearchLoading || isLoading 
+
+  if (isSearchLoading || isLoading ) {
     return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
+      <div className="flex items-center justify-center h-screen w-full bg-yellow-400">
+      <div className=" loader"></div>
+    </div>
     );
   }
 
@@ -81,7 +83,7 @@ const HeroCard = ({ input, isfavBtn }) => {
         <Outlet />
       </div>
       <div
-        className={` ${
+        className={`h-screen overflow-auto ${
           isProfileOpen &&
           "opacity-20 pointer-events-none select-none overscroll-y-none"
         } `}
@@ -191,15 +193,14 @@ const HeroCard = ({ input, isfavBtn }) => {
             </div>
           ))}
         </div>
-        {moreHandle ||
-          (!isfavBtn && (
+        {!isfavBtn && !searchData ? (
             <button
               onClick={moreHandle}
               className="bg-gray-700 text-white px-2 py-1 rounded-md"
             >
               More...
-            </button>
-          ))}
+            </button>) : <></>
+          }
       </div>
     </>
   );
