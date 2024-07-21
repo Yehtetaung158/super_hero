@@ -205,7 +205,7 @@ import useFavFlter from "../../hook/useFavFlter";
             </div>
           ))}
         </div>
-        {!isfavBtn && !searchData ? (
+        {!isfavBtn && !searchData && !filterInput ? (
             <button
               onClick={moreHandle}
               className="bg-gray-700 text-white px-2 py-1 rounded-md"
