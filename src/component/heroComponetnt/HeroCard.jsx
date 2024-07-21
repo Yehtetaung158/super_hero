@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toggleSProfile } from "../../store/profileOpen_service";
 import MyComponent from "../../hook/useFetch";
+import useFavFlter from "../../hook/useFavFlter";
 
-const HeroCard = ({ input, isfavBtn }) => {
+  const HeroCard = ({ input, isfavBtn,filterInput}) => {
   const nav = useNavigate();
   const dispatch = useDispatch();
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -16,10 +17,12 @@ const HeroCard = ({ input, isfavBtn }) => {
   const { data, isError, isLoading, moreHandle } = MyComponent();
 
   const favArr = useSelector((state) => state.favorites.favArr);
+  console.log("FAv",favArr)
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
   const { searchData, searchError, isSearchLoading } = MyComponent(input, {
     skip: !input,
   });
+  const {newArray, handleflt }=useFavFlter()
   console.log(searchData)
   const favBtnHandler = (id) => {
     const currentItem = currentArr.find((i) => i.id == id);
@@ -49,14 +52,17 @@ const HeroCard = ({ input, isfavBtn }) => {
   }, [data]);
 
   useEffect(() => {
-    if (searchData?.results) {
+    if(filterInput){
+      handleflt(filterInput);
+      setCurrentArr(newArray)
+    }else if (searchData?.results) {
       setCurrentArr(searchData.results);
     } else if (isfavBtn && favArr) {
       setCurrentArr(favArr);
     } else if (heroArr) {
       setCurrentArr(heroArr);
     }
-  }, [searchData, heroArr, isfavBtn, favArr]);
+  }, [searchData, heroArr, isfavBtn, favArr,filterInput]);
 
   // isSearchLoading || isLoading 
 
