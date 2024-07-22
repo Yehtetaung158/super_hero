@@ -1,4 +1,4 @@
-// store/favSlice.js
+// src/store/favSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -30,4 +30,7 @@ const favSlice = createSlice({
 });
 
 export const { addFavorite, getFavorites, updateFavorite, removeFavorite } = favSlice.actions;
+
+export const selectFavArr = (state) => state.favorites.favArr; // Add this line
+
 export default favSlice.reducer;

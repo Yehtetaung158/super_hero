@@ -6,8 +6,10 @@ const useFavFlter = () => {
   const [newArray, setNewArray] = useState([]);
 
   const handleflt = (searchInput) => {
+    // Ensure searchInput is a string
+    const input = searchInput || '';
     const results = favArr.filter(item =>
-      item.name.toLowerCase().includes(searchInput.toLowerCase())
+      item.name.toLowerCase().includes(input.toLowerCase())
     );
     setNewArray(results);
   };
