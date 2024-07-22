@@ -17,12 +17,14 @@ const Homepage = () => {
     (state) => state.hero
   );
   const favArr = useSelector((state) => state.favorites.favArr);
+  // const favheroArr = useSelector((state) => state.hero.favheroArr);
+  // console.log(favheroArr);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
-  const { searchData,moreHandle } = MyComponent(input, { skip: !input });
+  const { searchData, moreHandle, data } = MyComponent(input);
 
   const resultsCount = searchData?.results?.length || 0;
   const message = `Result for (${
-    resultsCount > 0 ? resultsCount : ""
+    resultsCount > 0 ? resultsCount : "0"
   }) : ${input}`;
 
   return (
@@ -177,19 +179,21 @@ const Homepage = () => {
             ) : isSearch ? (
               <HeroCard searchData={searchData} />
             ) : (
-              <HeroCard />
+              data && <HeroCard data={data} />
             )}
           </div>
 
           <div className="sticky top-0 z-50 border-b-2 border-black bg-gray-400 flex justify-between px-2 py-2">
-            {!filterInput && !isfavBtn && !isSearch && <>
-              <button
-            onClick={()=>moreHandle()}
-            className="bg-gray-700 text-white px-2 py-1 rounded-md"
-          >
-            More...
-          </button>
-            </>}
+            {!filterInput && !isfavBtn && !isSearch && (
+              <>
+                <button
+                  onClick={() => moreHandle()}
+                  className="bg-gray-700 text-white px-2 py-1 rounded-md"
+                >
+                  More...
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import {
 
 const MyComponent = (heroInput) => {
   const [heroId, setHeriId] = useState(1);
-  const [moreHeroFetch, setmoreHeroFetch] = useState(10);
+  const [moreHeroFetch, setmoreHeroFetch] = useState(7);
   const [heroName, setHeroName] = useState(null);
 
   const { data, isError, isLoading } = useHerosQuery(heroId);
