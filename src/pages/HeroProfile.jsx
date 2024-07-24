@@ -44,14 +44,18 @@ const HeroProfile = () => {
 
       {isLoading ? (
         <>
-          <h1>Loading</h1>
+          <div className="flex items-center justify-center h-full w-full bg-yellow-400">
+            <div className="loader"></div>
+          </div>
         </>
       ) : (
         <>
           {isError ? (
             <>
               {" "}
-              <h1>Error</h1>
+              <div className="flex items-center justify-center h-full w-full bg-yellow-400">
+                <div>Somethinf is wrong!</div>
+              </div>
             </>
           ) : (
             <>
@@ -60,15 +64,12 @@ const HeroProfile = () => {
                 <div className=" h-full flex gap-2 max-w-4/5">
                   <div className="w-full flex flex-col justify-between gap-2">
                     <div className=" flex gap-2 h-1/3">
-                        <img
-                          className="rounded-t-lg"
-                          src={data?.image?.url}
-                        />
+                      <img className="rounded-t-lg" src={data?.image?.url} />
                       <div className=" w-1/2">
                         {data && (
                           <>
                             <ul className=" my-2 py-1 mx-2 px-2">
-                              <NavLink state={{ data }} to={`/${data.id}`} end>
+                              <NavLink className={`w-full flex`} state={{ data }} to={`/${data.id}`} end>
                                 Powerstats
                               </NavLink>
                               {Object.keys(data).map(
@@ -93,52 +94,15 @@ const HeroProfile = () => {
                         )}
                       </div>
                     </div>
-                    <div className="p-5 h-2/3 bg-red-200">
-                        <h5 className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-                          {data?.name}
-                        </h5>
-                      <div className="  h-5/6 bg-green-200 overflow-auto">
+                    <div className="p-5 h-2/3">
+                      <h5 className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+                        {data?.name}
+                      </h5>
+                      <div className="  h-5/6  overflow-auto">
                         <Outlet />
                       </div>
                     </div>
                   </div>
-                  {/* <div className=" h-full w-1/3 bg-slate-500">
-                    <div className="h-1/3 w-full">
-                      <img
-                        className="h-full mx-auto "
-                        src={data?.image?.url}
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      {data && (
-                        <>
-                          <ul className=" my-2 py-1 mx-2 px-2 bg-gray-400">
-                            <NavLink state={{data}} to={`/${data.id}`} end>
-                              Powerstats
-                            </NavLink>
-                            {Object.keys(data).map(
-                              (key) =>
-                                key !== "id" &&
-                                key !== "name" &&
-                                key !== "response" &&
-                                key !== "image" &&
-                                key !== "powerstats" && (
-                                  <NavLink
-                                    key={key}
-                                    state={{ data, key }}
-                                    className={`w-full flex `}
-                                    to={`/${id}/${key}`}
-                                  >
-                                    {key}
-                                  </NavLink>
-                                )
-                            )}
-                          </ul>
-                        </>
-                      )}
-                    </div>
-                  </div> */}
                 </div>
               )}
             </>
