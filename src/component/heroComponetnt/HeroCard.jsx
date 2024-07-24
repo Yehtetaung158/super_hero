@@ -12,10 +12,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import MyComponent from "../../hook/useFetch";
 import useFavFlter from "../../hook/useFavFlter";
 
-const HeroCard = ({ searchData,data }) => {
+const HeroCard = ({ searchData,data}) => {
   const nav = useNavigate();
   const dispatch = useDispatch();
-  const {  isError, isLoading } = MyComponent();
+  const {  isError, isLoading,isSearchLoading,searchError } = MyComponent();
   const { newArray, handleflt } = useFavFlter();
   const favArr = useSelector((state) => state.favorites.favArr);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
@@ -66,7 +66,7 @@ const HeroCard = ({ searchData,data }) => {
     }
   }, [searchData, heroArr, isfavBtn, favArr, filterInput, isSearch]);
 
-  if (isLoading) {
+  if (isLoading || isSearchLoading) {
     return (
       <div className="flex items-center justify-center h-screen w-full bg-yellow-400">
         <div className="loader"></div>
@@ -74,10 +74,10 @@ const HeroCard = ({ searchData,data }) => {
     );
   }
 
-  if (isError) {
+  if (isError || searchError) {
     return (
-      <div>
-        <h1>Error!</h1>
+      <div className="flex items-center justify-center w-full h-screen bg-yellow-400">
+        <h1>Something is wrong!</h1>
       </div>
     );
   }

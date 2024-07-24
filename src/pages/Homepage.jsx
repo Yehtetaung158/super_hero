@@ -13,25 +13,35 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
-  const nav=useNavigate()
+  const nav = useNavigate();
   const dispatch = useDispatch();
-  const { isfavBtn, input, filterInput, isSearch,isIntro } = useSelector(
+  const { isfavBtn, input, filterInput, isSearch, isIntro } = useSelector(
     (state) => state.hero
   );
   const favArr = useSelector((state) => state.favorites.favArr);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
-  const { searchData, moreHandle, data } = MyComponent(input);
+  const {
+    searchData,
+    moreHandle,
+    data,
+    searchError,
+    isError,
+    isLoading,
+    isSearchLoading,
+  } = MyComponent(input);
+  console.log(searchError, isError, isLoading, isSearchLoading);
 
   const resultsCount = searchData?.results?.length || 0;
   const message = `Result for (${
     resultsCount > 0 ? resultsCount : "0"
   }) : ${input}`;
 
-  useEffect(()=>{
-    if(isIntro){
-      nav("/intro")
+  useEffect(() => {
+    if (isIntro) {
+      nav("/intro");
     }
-  }),[isIntro]
+  }),
+    [isIntro];
 
   return (
     <div className={`${isProfileOpen && "fixed"} `}>
@@ -178,7 +188,11 @@ const Homepage = () => {
           </div>
 
           <div className="w-full z-30 bg-gray-300">
-            {filterInput ? (
+            {isLoading || isSearchLoading ? (
+              <HeroCard />
+            ) : isError || searchError ? (
+              <HeroCard />
+            ) : filterInput ? (
               <HeroCard />
             ) : isfavBtn ? (
               <HeroCard />
