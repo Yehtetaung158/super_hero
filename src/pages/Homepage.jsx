@@ -1,5 +1,5 @@
 // src/pages/Homepage.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import "animate.css";
 import HeroCard from "../component/heroComponetnt/HeroCard";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,15 +10,15 @@ import {
   setFilterInput,
   setIsSearch,
 } from "../store/heroSlice";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
+  const nav=useNavigate()
   const dispatch = useDispatch();
-  const { isfavBtn, input, filterInput, isSearch } = useSelector(
+  const { isfavBtn, input, filterInput, isSearch,isIntro } = useSelector(
     (state) => state.hero
   );
   const favArr = useSelector((state) => state.favorites.favArr);
-  // const favheroArr = useSelector((state) => state.hero.favheroArr);
-  // console.log(favheroArr);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);
   const { searchData, moreHandle, data } = MyComponent(input);
 
@@ -26,6 +26,12 @@ const Homepage = () => {
   const message = `Result for (${
     resultsCount > 0 ? resultsCount : "0"
   }) : ${input}`;
+
+  useEffect(()=>{
+    if(isIntro){
+      nav("/intro")
+    }
+  }),[isIntro]
 
   return (
     <div className={`${isProfileOpen && "fixed"} `}>

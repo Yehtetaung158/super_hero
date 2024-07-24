@@ -12,10 +12,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import MyComponent from "../../hook/useFetch";
 import useFavFlter from "../../hook/useFavFlter";
 
-const HeroCard = ({ searchData }) => {
+const HeroCard = ({ searchData,data }) => {
   const nav = useNavigate();
   const dispatch = useDispatch();
-  const { data, isError, isLoading } = MyComponent();
+  const {  isError, isLoading } = MyComponent();
   const { newArray, handleflt } = useFavFlter();
   const favArr = useSelector((state) => state.favorites.favArr);
   const isProfileOpen = useSelector((state) => state.profileOpen.isProfileOpen);

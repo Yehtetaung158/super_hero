@@ -1,11 +1,12 @@
 // src/store/heroSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isfavBtn: false,
-  input: '',
-  filterInput: '',
+  input: "",
+  filterInput: "",
   isSearch: false,
+  isIntro: true,
   hoveredItem: null,
   removeAnimate: null,
   heroArr: [],
@@ -13,7 +14,7 @@ const initialState = {
 };
 
 const heroSlice = createSlice({
-  name: 'hero',
+  name: "hero",
   initialState,
   reducers: {
     setIsFavBtn(state, action) {
@@ -40,6 +41,9 @@ const heroSlice = createSlice({
     setCurrentArr(state, action) {
       state.currentArr = action.payload;
     },
+    setIsIntro(state, action) {
+      state.isIntro = action.payload;
+    },
   },
 });
 
@@ -50,6 +54,7 @@ export const {
   setIsSearch,
   setHoveredItem,
   setRemoveAnimate,
+  setIsIntro,
   setHeroArr,
   setCurrentArr,
 } = heroSlice.actions;
